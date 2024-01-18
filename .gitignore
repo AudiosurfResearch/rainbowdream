@@ -1,2 +1,10 @@
 /target
+
+# ignore channel groups
 *.cgr
+
+# ignore test media files
+*.flac
+*.mp3
+*.wav
+*.ogg
