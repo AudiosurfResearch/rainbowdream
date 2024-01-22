@@ -3,7 +3,6 @@ use std::fs;
 use anyhow::anyhow;
 use clap::Parser;
 use gingerlib::channelgroups::ChannelGroup;
-//use lofty::{read_from_path, TaggedFileExt};
 
 #[derive(Parser, Debug)]
 #[command(
@@ -23,7 +22,7 @@ struct Args {
 
     /// Path of the .cgr file to inject into
     #[arg(short, long)]
-    cgr_path: String,
+    cgr_path: Option<String>,
 
     /// Path of the output .cgr file
     #[arg(short, long)]
@@ -35,7 +34,29 @@ fn main() -> anyhow::Result<()> {
     let song_data = fs::read(&args.song_path)?;
     let ash_data = fs::read(&args.ash_path)?;
 
-    let mut template_group = ChannelGroup::read_from_file(&args.cgr_path)?;
+    let mut template_group = match &args.cgr_path {
+        Some(path) => ChannelGroup::read_from_file(path)?,
+        None => {
+            println!("No .cgr file specified, attempting to locate suitable file from Audiosurf");
+            let steam_dir = steamlocate::SteamDir::locate()?;
+            let (garrys_mod, library) = steam_dir.find_app(12900)?.unwrap();
+            let mut audiosurf_path = library.resolve_app_dir(&garrys_mod);
+            audiosurf_path.extend([
+                "engine",
+                "Cache",
+                "Web",
+                "www.audio-surf.com",
+                "as",
+                "asradio",
+                "ASR_PedroCamacho_AudiosurfOverture.cgr",
+            ]);
+            let audiosurf_path_str = audiosurf_path.to_str().unwrap();
+            //surely this is always UTF-8 :^)
+            println!("Found file at {}", audiosurf_path_str);
+            ChannelGroup::read_from_file(audiosurf_path_str)?
+        }
+    };
+
     if template_group.tags[33].name != "BUFS" {
         return Err(anyhow!("Couldn't find song buffer vault size tag!"));
     }

@@ -3,7 +3,7 @@ name = "rainbowdream"
 description = "A CLI app to make custom Audiosurf Radio .cgr files."
 license = "MIT"
 repository = "https://github.com/AudiosurfResearch/rainbowdream"
-version = "1.0.0"
+version = "1.1.0"
 edition = "2021"
 authors = ["m1nt_"]
 
@@ -13,3 +13,4 @@ authors = ["m1nt_"]
 anyhow = "1.0.79"
 clap = { version = "4.4.18", features = ["derive"] }
 gingerlib = "1.0.0"
+steamlocate = "2.0.0-beta.2"
