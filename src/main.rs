@@ -39,8 +39,8 @@ fn main() -> anyhow::Result<()> {
         None => {
             println!("No .cgr file specified, attempting to locate suitable file from Audiosurf");
             let steam_dir = steamlocate::SteamDir::locate()?;
-            let (garrys_mod, library) = steam_dir.find_app(12900)?.unwrap();
-            let mut audiosurf_path = library.resolve_app_dir(&garrys_mod);
+            let (audiosurf, library) = steam_dir.find_app(12900)?.unwrap();
+            let mut audiosurf_path = library.resolve_app_dir(&audiosurf);
             audiosurf_path.extend([
                 "engine",
                 "Cache",
