@@ -3,7 +3,7 @@ name = "rainbowdream"
 description = "A CLI app to make custom Audiosurf Radio .cgr files."
 license = "MIT"
 repository = "https://github.com/AudiosurfResearch/rainbowdream"
-version = "1.1.0"
+version = "1.2.0"
 edition = "2021"
 authors = ["m1nt_"]
 
